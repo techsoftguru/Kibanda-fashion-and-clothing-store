@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <!-- Favicon & Icons -->
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    
+    <!-- SEO Meta Tags -->
+    <title>AfroSneakers | Premium African Fashion & Footwear</title>
+    <meta name="description" content="Shop premium African fashion, sneakers, and accessories. Secure checkout with M-Pesa, card payments, and cash on delivery." />
+    <meta name="keywords" content="African sneakers, fashion, clothing, accessories, M-Pesa, shopping, Kenya" />
+    <meta name="author" content="AfroSneakers" />
+    <meta name="theme-color" content="#667eea" />
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="AfroSneakers | African Fashion & Sneakers" />
+    <meta property="og:description" content="Premium African fashion, sneakers, and accessories with secure M-Pesa payments" />
+    <meta property="og:image" content="%PUBLIC_URL%/og-image.jpg" />
+    <meta property="og:url" content="https://afrosneakers.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_KE" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@afrosneakers" />
+    <meta name="twitter:title" content="AfroSneakers | African Fashion E-commerce" />
+    <meta name="twitter:description" content="Shop authentic African fashion with M-Pesa integration" />
+    <meta name="twitter:image" content="%PUBLIC_URL%/og-image.jpg" />
+    
+    <!-- PWA -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="AfroSneakers" />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- Preconnect to API -->
+    <link rel="preconnect" href="http://localhost:5000" />
+    <link rel="preconnect" href="https://api.afrosneakers.com" />
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" as="style" />
+    <link rel="preload" href="%PUBLIC_URL%/logo512.png" as="image" type="image/png" />
+    
+    <!-- Critical CSS (inlined for performance) -->
+    <style>
+      /* Critical above-the-fold styles that match your React app */
+      :root {
+        --primary: #667eea;
+        --primary-dark: #5a67d8;
+        --secondary: #764ba2;
+        --accent: #f39c12;
+        --success: #27ae60;
+        --danger: #e74c3c;
+        --warning: #f39c12;
+        --dark: #2c3e50;
+        --light: #f8f9fa;
+        --gray: #95a5a6;
+        --border: #e0e0e0;
+        --shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      }
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+          'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background: var(--light);
+        color: var(--dark);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+      
+      /* Loading state that matches your Loader component */
+      #root-loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        z-index: 9999;
+        transition: opacity 0.5s ease;
+      }
+      
+      .loading-spinner {
+        width: 60px;
+        height: 60px;
+        border: 5px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 1s linear infinite;
+        margin-bottom: 20px;
+      }
+      
+      .loading-text {
+        color: white;
+        font-family: 'Poppins', sans-serif;
+        font-size: 18px;
+        font-weight: 500;
+        letter-spacing: 1px;
+      }
+      
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      
+      /* Hide loading screen when React mounts */
+      .root-loaded #root-loading {
+        opacity: 0;
+        pointer-events: none;
+      }
+      
+      /* Style for noscript fallback */
+      .noscript-fallback {
+        padding: 40px 20px;
+        text-align: center;
+        background: white;
+        min-height: 100vh;
+      }
+      
+      .noscript-fallback h1 {
+        color: var(--dark);
+        margin-bottom: 20px;
+        font-family: 'Poppins', sans-serif;
+      }
+      
+      .noscript-fallback p {
+        color: var(--gray);
+        margin-bottom: 30px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      
+      .noscript-actions {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      
+      .noscript-btn {
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+      
+      .noscript-btn-primary {
+        background: var(--primary);
+        color: white;
+      }
+      
+      .noscript-btn-secondary {
+        background: var(--light);
+        color: var(--dark);
+        border: 2px solid var(--border);
+      }
+      
+      .noscript-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow);
+      }
+    </style>
+    
+    <!-- Structured Data for E-commerce SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "AfroSneakers",
+      "description": "Premium African fashion, sneakers, and accessories e-commerce platform",
+      "url": "https://afrosneakers.com",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://afrosneakers.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "AfroSneakers",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://afrosneakers.com/logo512.png",
+          "width": 512,
+          "height": 512
+        }
+      },
+      "offers": {
+        "@type": "AggregateOffer",
+        "priceCurrency": "KES",
+        "lowPrice": "500",
+        "highPrice": "50000",
+        "offerCount": "1000"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Kenya"
+      },
+      "availableChannel": {
+        "@type": "OnlineStore",
+        "url": "https://afrosneakers.com"
+      }
+    }
+    </script>
+    
+    <!-- Environment variable for API URL -->
+    <script>
+      window.REACT_APP_API_URL = '%REACT_APP_API_URL%' || 'http://localhost:5000/api';
+      window.REACT_APP_WS_URL = '%REACT_APP_WS_URL%' || 'ws://localhost:5000';
+      window.REACT_APP_ENV = '%NODE_ENV%' || 'development';
+    </script>
+  </head>
+  
+  <body>
+    <!-- Loading screen (shown until React mounts) -->
+    <div id="root-loading">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Loading AfroSneakers...</div>
+    </div>
+    
+    <!-- No JavaScript fallback -->
+    <noscript>
+      <div class="noscript-fallback">
+        <h1>JavaScript Required</h1>
+        <p>
+          AfroSneakers is a modern e-commerce application that requires JavaScript to function properly. 
+          Our platform uses React.js to deliver a fast, interactive shopping experience with features like:
+        </p>
+        <ul style="text-align: left; max-width: 500px; margin: 20px auto 30px; color: var(--gray);">
+          <li>Real-time product search and filtering</li>
+          <li>Interactive shopping cart with live updates</li>
+          <li>Secure M-Pesa payment integration</li>
+          <li>Personalized user dashboard</li>
+          <li>Admin management interface</li>
+        </ul>
+        <p>Please enable JavaScript in your browser settings to continue shopping.</p>
+        <div class="noscript-actions">
+          <a href="https://www.enable-javascript.com/" class="noscript-btn noscript-btn-primary" target="_blank">
+            How to Enable JavaScript
+          </a>
+          <a href="https://afrosneakers.com/contact" class="noscript-btn noscript-btn-secondary">
+            Contact Support
+          </a>
+        </div>
+      </div>
+    </noscript>
+    
+    <!-- React root -->
+    <div id="root"></div>
+    
+    <!-- Service Worker Registration (PWA) -->
+    <script>
+      // Register service worker in production
+      if ('serviceWorker' in navigator && window.REACT_APP_ENV === 'production') {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then(registration => {
+              console.log('ServiceWorker registration successful:', registration.scope);
+              
+              // Check for updates
+              registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                console.log('New service worker found:', newWorker);
+              });
+            })
+            .catch(error => {
+              console.log('ServiceWorker registration failed:', error);
+            });
+        });
+      }
+      
+      // Initialize before React loads
+      window.addEventListener('DOMContentLoaded', () => {
+        // Add loaded class to body when React mounts
+        setTimeout(() => {
+          document.body.classList.add('root-loaded');
+          
+          // Remove loading screen after transition
+          setTimeout(() => {
+            const loadingScreen = document.getElementById('root-loading');
+            if (loadingScreen) {
+              loadingScreen.style.display = 'none';
+            }
+          }, 500);
+        }, 1000);
+        
+        // Check if user has visited before
+        if (!localStorage.getItem('firstVisit')) {
+          localStorage.setItem('firstVisit', new Date().toISOString());
+          console.log('Welcome to AfroSneakers!');
+        }
+        
+        // Initialize global error handler
+        window.addEventListener('error', function(e) {
+          console.error('Global error caught:', e.error);
+          
+          // Send to error tracking service in production
+          if (window.REACT_APP_ENV === 'production') {
+            // Implement your error tracking here (e.g., Sentry, LogRocket)
+          }
+        });
+      });
+      
+      // Handle online/offline status (matches your Redux store)
+      window.addEventListener('online', () => {
+        console.log('App is online');
+        if (window.dispatchEvent) {
+          window.dispatchEvent(new CustomEvent('appOnline'));
+        }
+      });
+      
+      window.addEventListener('offline', () => {
+        console.log('App is offline');
+        if (window.dispatchEvent) {
+          window.dispatchEvent(new CustomEvent('appOffline'));
+        }
+      });
+      
+      // Store configuration that matches your backend
+      window.appConfig = {
+        api: {
+          baseUrl: window.REACT_APP_API_URL,
+          endpoints: {
+            products: '/products',
+            categories: '/categories',
+            auth: '/auth',
+            orders: '/orders',
+            users: '/users',
+            mpesa: '/mpesa',
+            upload: '/upload'
+          }
+        },
+        features: {
+          mpesa: true,
+          auth: true,
+          cart: true,
+          wishlist: true,
+          reviews: true,
+          admin: true
+        },
+        payment: {
+          methods: ['mpesa', 'card', 'cash_on_delivery'],
+          currency: 'KES',
+          mpesaShortcode: '174379'
+        },
+        ui: {
+          theme: 'light',
+          language: 'en',
+          currency: 'KES'
+        }
+      };
+    </script>
+    
+    <!-- Global error handling for React -->
+    <script>
+      // This helps catch React errors and shows a fallback
+      window.reactErrorHandler = function(error, errorInfo) {
+        console.error('React Error:', error, errorInfo);
+        
+        // In production, you might want to show a user-friendly error page
+        if (window.REACT_APP_ENV === 'production') {
+          const root = document.getElementById('root');
+          if (root) {
+            root.innerHTML = `
+              <div style="padding: 40px; text-align: center; font-family: 'Inter', sans-serif;">
+                <h1 style="color: var(--danger); margin-bottom: 20px;">Something went wrong</h1>
+                <p style="color: var(--gray); margin-bottom: 30px;">
+                  We're sorry, but there was an error loading the application.
+                  Please try refreshing the page or contact support if the problem persists.
+                </p>
+                <button onclick="window.location.reload()" style="
+                  padding: 12px 24px;
+                  background: var(--primary);
+                  color: white;
+                  border: none;
+                  border-radius: 8px;
+                  font-family: inherit;
+                  font-weight: 500;
+                  cursor: pointer;
+                  transition: all 0.3s ease;
+                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 15px rgba(102, 126, 234, 0.3)'"
+                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                  Refresh Page
+                </button>
+              </div>
+            `;
+          }
+        }
+      };
+    </script>
+  </body>
+</html>

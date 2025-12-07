@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: kibanda-mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: kibanda-fashion
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - kibanda-network
+
+  backend:
+    build: ./backend
+    container_name: kibanda-backend
+    restart: always
+    environment:
+      NODE_ENV: production
+      MONGODB_URI: mongodb://admin:password123@mongodb:27017/kibanda-fashion?authSource=admin
+      JWT_SECRET: your-jwt-secret-key-here
+      PORT: 5000
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+    networks:
+      - kibanda-network
+    volumes:
+      - ./backend/uploads:/app/uploads
+
+  frontend:
+    build: ./frontend
+    container_name: kibanda-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - kibanda-network
+
+  redis:
+    image: redis:alpine
+    container_name: kibanda-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - kibanda-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  kibanda-network:
+    driver: bridge
